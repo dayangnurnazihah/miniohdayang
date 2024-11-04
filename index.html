@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OHDAYANG Custom Popup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: antiquewhite;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .step-container {
+      width: 400px;
+      background-color: rgb(254, 255, 216);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+    .step-container h1 {
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 100;
+      margin: 0;
+    }
+    .options img {
+      width: 100px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .options img:hover {
+      border: 2px solid #000;
+    }
+    .display-area {
+      width: 300px;
+      height: 300px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    #selected-flower img, .added-element {
+      position: absolute;
+      z-index: 10;
+    }
+    .controls button {
+      margin: 5px;
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 100;
+      width: 100px;
+      height: 50px;
+      border-radius: 50px;
+    }
+    .dangle-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .dangle-options img {
+      width: 80px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+    
+  <div class="container">
+    <div class="step-container" id="step-1">
+        <h1 id="step-1-text"></h1>
+    </div>
+    
+    <div class="step-container" id="step-2" style="display: none;">
+        <h1 id="step-2-text"></h1>
+    </div>
+    
+    <div class="step-container" id="step-3" style="display: none;">
+        <h1 id="step-3-text"></h1>
+    </div>
+
+    <div class="options">
+      <img src="flower1.png" alt="Flower 1" onclick="selectFlower('flower1.png')">
+      <img src="flower2.png" alt="Flower 2" onclick="selectFlower('flower2.png')">
+      <img src="flower3.png" alt="Flower 3" onclick="selectFlower('flower3.png')">
+    </div>
+
+    <div class="display-area">
+      <div id="selected-flower"></div>
+    </div>
+
+    <div class="controls">
+      <button onclick="addPin()" style="background-color: rgb(221, 169, 169);">Pins</button>
+      <button onclick="addEarring()" style="background-color: rgb(228, 241, 198);">Earrings</button>
+      <button onclick="addDangle()" style="background-color: rgb(198, 241, 241);">Bag Charm</button>
+    </div>
+
+    <div class="dangle-options">
+      <img src="dangle1.png" alt="Dangle 1" onclick="selectDangle('dangle1.png')">
+      <img src="dangle2.png" alt="Dangle 2" onclick="selectDangle('dangle2.png')">
+    </div>
+  </div>
+
+  <script>
+    let isFlowerSelected = false;
+    let isAccessorySelected = false;
+    let pinOffset = 0;
+    let dangleOffset = 0;
+    let selectedDangleSrc = "";
+
+    function typeText(elementId, text, callback) {
+        let i = 0;
+        const element = document.getElementById(elementId);
+        element.textContent = ""; // Clear any existing text
+
+        function type() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, 50); // Typing speed (50ms per character)
+            } else if (callback) {
+                callback(); // Trigger next step when typing is complete
+            }
+        }
+        type();
+    }
+
+    // Initialize Step 1 with typing effect on page load
+    typeText("step-1-text", "Step 1: Choose Flower");
+
+    function selectFlower(imageSrc) {
+        isFlowerSelected = true;
+        const displayArea = document.getElementById('selected-flower');
+        displayArea.innerHTML = `<img src="${imageSrc}" alt="Selected Flower">`;
+
+        document.getElementById("step-1").style.display = "none";
+        document.getElementById("step-2").style.display = "block";
+        typeText("step-2-text", "Step 2: Choose Accessory");
+    }
+
+    function addPin() {
+        isAccessorySelected = true;
+        const pin = document.createElement('img');
+        pin.src = 'pin.png'; 
+        pin.alt = 'Pin';
+        pin.classList.add('added-element');
+        pin.style.top = `calc(60% + ${pinOffset}px)`;
+        pin.style.right = `calc(55% + ${pinOffset}px)`;
+        pinOffset += 10;
+        document.getElementById('selected-flower').appendChild(pin);
+
+        document.getElementById("step-2").style.display = "none";
+        document.getElementById("step-3").style.display = "block";
+        typeText("step-3-text", "Step 3: Choose Dangle");
+    }
+
+    function addEarring() {
+        const earring = document.createElement('img');
+        earring.src = 'earring.png'; 
+        earring.alt = 'Earring';
+        earring.classList.add('added-element');
+        document.getElementById('selected-flower').appendChild(earring);
+    }
+
+    function selectDangle(dangleSrc) {
+        selectedDangleSrc = dangleSrc;
+        addDangle();
+    }
+
+    function addDangle() {
+        if (!selectedDangleSrc) {
+            alert("Please select a dangle option first.");
+            return;
+        }
+
+        const dangle = document.createElement('img');
+        dangle.src = selectedDangleSrc;
+        dangle.alt = 'Dangle';
+        dangle.classList.add('added-element');
+        dangle.style.top = `calc(68% + ${dangleOffset}px)`;
+        dangle.style.right = `calc(35% + ${dangleOffset}px)`;
+        dangleOffset += 10;
+        dangle.style.zIndex = '10';
+
+        document.getElementById('selected-flower').appendChild(dangle);
+    }
+  </script>
+</body>
+</html>
