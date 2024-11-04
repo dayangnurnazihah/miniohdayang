@@ -9,12 +9,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: antiquewhite;
+      background-color:rgb(216, 56, 227);
+      display: flex;
+      justify-content: center;
     }
+
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
+      background-color: rgb(249, 248, 199);
+      width: 600px;
+      box-shadow: 8px 30px 2px rgb(64, 31, 67);
+      border-radius: 5px;
     }
     .options {
       display: flex;
@@ -49,10 +56,27 @@
       height: 300px;
       position: relative;
       margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    #selected-flower img, .added-element {
+    .earring-display {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+    }
+    .earring {
+      position: relative;
+    }
+    .earring img {
+      width: 60px;
+    }
+    .earring-hook {
       position: absolute;
-      z-index: 10;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
     }
     .controls button {
       margin: 5px;
@@ -74,19 +98,23 @@
   </style>
 </head>
 <body>
-    
+
+  <audio autoplay loop>
+    <source src="bgsound.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
   <div class="container">
     <div class="step-container" id="step-1">
-        <h1 id="step-1-text"></h1>
-    </div>
-    
-    <div class="step-container" id="step-2" style="display: none;">
-        <h1 id="step-2-text"></h1>
-    </div>
-    
-    <div class="step-container" id="step-3" style="display: none;">
-        <h1 id="step-3-text"></h1>
-    </div>
+      <h1 id="step-1-text"></h1>
+  </div>
+  
+  <div class="step-container" id="step-2" style="display: none;">
+      <h1 id="step-2-text"></h1>
+  </div>
+  
+  <div class="step-container" id="step-3" style="display: none;">
+      <h1 id="step-3-text"></h1>
+  </div>
 
     <div class="options">
       <img src="flower1.png" alt="Flower 1" onclick="selectFlower('flower1.png')">
@@ -94,14 +122,14 @@
       <img src="flower3.png" alt="Flower 3" onclick="selectFlower('flower3.png')">
     </div>
 
-    <div class="display-area">
-      <div id="selected-flower"></div>
+    <div class="display-area" id="selected-flower">
+      <!-- Instructions or accessories will be displayed here -->
     </div>
 
     <div class="controls">
-      <button onclick="addPin()" style="background-color: rgb(221, 169, 169);">Pins</button>
-      <button onclick="addEarring()" style="background-color: rgb(228, 241, 198);">Earrings</button>
-      <button onclick="addDangle()" style="background-color: rgb(198, 241, 241);">Bag Charm</button>
+      <button onclick="addPin()" style="background-color: rgb(221, 169, 169);">PINS</button>
+      <button onclick="addEarring()" style="background-color: rgb(228, 241, 198);">EARRINGS</button>
+      <button onclick="addBagCharm()" style="background-color: rgb(198, 241, 241);">BAG CHARM</button>
     </div>
 
     <div class="dangle-options">
@@ -111,69 +139,141 @@
   </div>
 
   <script>
-    let isFlowerSelected = false;
-    let isAccessorySelected = false;
-    let pinOffset = 0;
-    let dangleOffset = 0;
+    let selectedFlowerSrc = ""; 
+    let currentAccessory = null; 
     let selectedDangleSrc = "";
+    let currentDangle = null;
+    let selectedFlowerType = "";
 
     function typeText(elementId, text, callback) {
-        let i = 0;
-        const element = document.getElementById(elementId);
-        element.textContent = ""; // Clear any existing text
+    let i = 0;
+    const element = document.getElementById(elementId);
+    element.textContent = ""; 
 
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, 50); // Typing speed (50ms per character)
-            } else if (callback) {
-                callback(); // Trigger next step when typing is complete
-            }
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, 50); 
+        } else if (callback) {
+            callback(); 
         }
-        type();
     }
+    type();
+}
 
-    // Initialize Step 1 with typing effect on page load
-    typeText("step-1-text", "Step 1: Choose Flower");
+typeText("step-1-text", "Step 1: Choose Flower");
 
     function selectFlower(imageSrc) {
-        isFlowerSelected = true;
-        const displayArea = document.getElementById('selected-flower');
-        displayArea.innerHTML = `<img src="${imageSrc}" alt="Selected Flower">`;
+      selectedFlowerSrc = imageSrc;
 
-        document.getElementById("step-1").style.display = "none";
-        document.getElementById("step-2").style.display = "block";
-        typeText("step-2-text", "Step 2: Choose Accessory");
+      if (imageSrc === 'flower1.png') {
+        selectedFlowerType = 'flower1';
+    } else if (imageSrc === 'flower2.png') {
+        selectedFlowerType = 'flower2';
+    } else if (imageSrc === 'flower3.png') {
+        selectedFlowerType = 'flower3';
+    }
+
+      const displayArea = document.getElementById('selected-flower');
+    displayArea.innerHTML = ''; 
+
+    const flower = document.createElement('img');
+    flower.src = imageSrc;
+    flower.alt = 'Selected Flower';
+
+    if (selectedFlowerType === 'flower1') {
+        flower.style.width = "250px";
+    } else if (selectedFlowerType === 'flower2') {
+        flower.style.width = "270px";
+    } else if (selectedFlowerType === 'flower3') {
+        flower.style.width = "220px";
+    }
+
+    displayArea.appendChild(flower);
+
+      document.getElementById("step-1").style.display = "none";
+      document.getElementById("step-2").style.display = "block";
+      typeText("step-2-text", "Step 2: Choose Accessory");
     }
 
     function addPin() {
-        isAccessorySelected = true;
-        const pin = document.createElement('img');
-        pin.src = 'pin.png'; 
-        pin.alt = 'Pin';
-        pin.classList.add('added-element');
-        pin.style.top = `calc(60% + ${pinOffset}px)`;
-        pin.style.right = `calc(55% + ${pinOffset}px)`;
-        pinOffset += 10;
-        document.getElementById('selected-flower').appendChild(pin);
-
-        document.getElementById("step-2").style.display = "none";
-        document.getElementById("step-3").style.display = "block";
-        typeText("step-3-text", "Step 3: Choose Dangle");
+    if (currentAccessory) {
+        currentAccessory.remove();
     }
 
+    const pin = document.createElement('img');
+    pin.src = 'pin.png';
+    pin.alt = 'Pin';
+    pin.classList.add('added-element');
+    
+    pin.style.position = "absolute";
+    pin.style.top = "55%"; 
+    pin.style.left = "-15%"; 
+    
+    document.getElementById('selected-flower').appendChild(pin);
+
+    currentAccessory = pin;
+
+    document.getElementById("step-2").style.display = "none";
+    document.getElementById("step-1").style.display = "none";
+    document.getElementById("step-3").style.display = "block";
+    typeText("step-3-text", "Step 3: Choose Dangle");
+}
+
+
     function addEarring() {
-        const earring = document.createElement('img');
-        earring.src = 'earring.png'; 
-        earring.alt = 'Earring';
-        earring.classList.add('added-element');
-        document.getElementById('selected-flower').appendChild(earring);
+      resetDisplayArea();
+
+      const earringContainer = document.createElement('div');
+      earringContainer.classList.add('earring-display');
+
+      for (let i = 0; i < 2; i++) {
+        const earring = document.createElement('div');
+        earring.classList.add('earring');
+
+        const earringHook = document.createElement('img');
+        earringHook.src = 'earringhook.png';
+        earringHook.alt = 'Earring Hook';
+        earringHook.classList.add('earring-hook');
+
+        const flower = document.createElement('img');
+        flower.src = selectedFlowerSrc;
+        flower.alt = 'Earring Flower';
+        flower.style.width = "150px";
+
+        earring.appendChild(earringHook);
+        earring.appendChild(flower);
+        earringContainer.appendChild(earring);
+      }
+
+      document.getElementById('selected-flower').appendChild(earringContainer);
+      currentAccessory = earringContainer;
+
+      document.getElementById("step-2").style.display = "none";
+      document.getElementById("step-3").style.display = "block";
+      typeText("step-3-text", "Step 3: Choose Dangle");
+
+    }
+
+    function addBagCharm() {
+      resetDisplayArea();
+
+      const bagcharm = document.createElement('img');
+      bagcharm.src = 'bagcharm.png';
+      bagcharm.alt = 'Bag Charm';
+      bagcharm.style.width = "100px";
+      document.getElementById('selected-flower').appendChild(bagcharm);
+
+      currentAccessory = bagcharm;
+
+      document.getElementById("step-2").style.display = "none";
+      document.getElementById("step-3").style.display = "block";
     }
 
     function selectDangle(dangleSrc) {
-        selectedDangleSrc = dangleSrc;
-        addDangle();
+      selectedDangleSrc = dangleSrc;
+      addDangle();
     }
 
     function addDangle() {
@@ -182,17 +282,40 @@
             return;
         }
 
+        if (currentDangle) {
+            currentDangle.remove();
+        }
+
         const dangle = document.createElement('img');
         dangle.src = selectedDangleSrc;
         dangle.alt = 'Dangle';
-        dangle.classList.add('added-element');
-        dangle.style.top = `calc(68% + ${dangleOffset}px)`;
-        dangle.style.right = `calc(35% + ${dangleOffset}px)`;
-        dangleOffset += 10;
-        dangle.style.zIndex = '10';
-
-        document.getElementById('selected-flower').appendChild(dangle);
+        dangle.classList.add('dangle'); 
+        if (selectedFlowerType === 'flower1') {
+        dangle.style.position = 'absolute';
+        dangle.style.top = '60%'; 
+        dangle.style.left = '45%';
+        dangle.style.transform = 'translateX(-50%)';
+    } else if (selectedFlowerType === 'flower2') {
+        dangle.style.position = 'absolute';
+        dangle.style.top = '55%'; 
+        dangle.style.left = '50%';
+        dangle.style.transform = 'translateX(-50%)';
+    } else if (selectedFlowerType === 'flower3') {
+        dangle.style.position = 'absolute';
+        dangle.style.top = '65%'; 
+        dangle.style.left = '50%';
+        dangle.style.transform = 'translateX(-50%)';
     }
+        document.getElementById('selected-flower').appendChild(dangle);
+
+        currentDangle = dangle;
+    }
+
+    function resetDisplayArea() {
+      document.getElementById('selected-flower').innerHTML = '';
+    }
+
+    document.querySelector("audio").volume = 1.0;
   </script>
 </body>
 </html>
