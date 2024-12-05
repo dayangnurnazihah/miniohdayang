@@ -123,7 +123,7 @@
     </div>
 
     <div class="display-area" id="selected-flower">
-      <!-- Instructions or accessories will be displayed here -->
+      <!-- accessories will be displayed here -->
     </div>
 
     <div class="controls">
@@ -222,39 +222,40 @@ typeText("step-1-text", "Step 1: Choose Flower");
 }
 
 
-    function addEarring() {
-      resetDisplayArea();
+function addEarring() {
+  resetDisplayArea();
 
-      const earringContainer = document.createElement('div');
-      earringContainer.classList.add('earring-display');
+  const earringContainer = document.createElement('div');
+  earringContainer.classList.add('earring-display');
 
-      for (let i = 0; i < 2; i++) {
-        const earring = document.createElement('div');
-        earring.classList.add('earring');
+  for (let i = 0; i < 2; i++) {
+    const earring = document.createElement('div');
+    earring.classList.add('earring');
 
-        const earringHook = document.createElement('img');
-        earringHook.src = 'earringhook.png';
-        earringHook.alt = 'Earring Hook';
-        earringHook.classList.add('earring-hook');
+    const earringHook = document.createElement('img');
+    earringHook.src = 'earringhook.png';
+    earringHook.alt = 'Earring Hook';
+    earringHook.classList.add('earring-hook');
 
-        const flower = document.createElement('img');
-        flower.src = selectedFlowerSrc;
-        flower.alt = 'Earring Flower';
-        flower.style.width = "150px";
+    const flower = document.createElement('img');
+    flower.src = selectedFlowerSrc;
+    flower.alt = 'Earring Flower';
+    flower.style.width = "150px";
 
-        earring.appendChild(earringHook);
-        earring.appendChild(flower);
-        earringContainer.appendChild(earring);
-      }
+    earring.appendChild(earringHook);
+    earring.appendChild(flower);
+    earringContainer.appendChild(earring);
+  }
 
-      document.getElementById('selected-flower').appendChild(earringContainer);
-      currentAccessory = earringContainer;
+  document.getElementById('selected-flower').appendChild(earringContainer);
+  currentAccessory = earringContainer;
 
-      document.getElementById("step-2").style.display = "none";
-      document.getElementById("step-3").style.display = "block";
-      typeText("step-3-text", "Step 3: Choose Dangle");
+  document.getElementById("step-2").style.display = "none";
+  document.getElementById("step-3").style.display = "block";
+  typeText("step-3-text", "Step 3: Choose Dangle");
+}
 
-    }
+
 
     function addBagCharm() {
       resetDisplayArea();
@@ -272,44 +273,51 @@ typeText("step-1-text", "Step 1: Choose Flower");
     }
 
     function selectDangle(dangleSrc) {
-      selectedDangleSrc = dangleSrc;
-      addDangle();
+    selectedDangleSrc = dangleSrc; 
+    addDangle(); 
+}
+
+function addDangle() {
+    if (!selectedDangleSrc) {
+        alert("Please select a dangle option first.");
+        return;
     }
 
-    function addDangle() {
-        if (!selectedDangleSrc) {
-            alert("Please select a dangle option first.");
-            return;
-        }
+    const existingDangles = document.querySelectorAll('.dangle');
+    existingDangles.forEach(dangle => dangle.remove());
 
-        if (currentDangle) {
-            currentDangle.remove();
-        }
-
+    if (currentAccessory && currentAccessory.classList.contains('earring-display')) {
+        const earrings = document.querySelectorAll('.earring');
+        earrings.forEach(earring => {
+            const dangle = document.createElement('img');
+            dangle.src = selectedDangleSrc;
+            dangle.alt = 'Dangle';
+            dangle.classList.add('dangle');
+            dangle.style.position = 'absolute';
+            dangle.style.top = '60%';
+            dangle.style.left = '50%';
+            dangle.style.transform = 'translateX(-50%)';
+            dangle.style.width = '70px'; 
+            earring.appendChild(dangle);
+        });
+    } else if (currentAccessory && currentAccessory.tagName === 'IMG' && currentAccessory.alt === 'Pin') {
         const dangle = document.createElement('img');
         dangle.src = selectedDangleSrc;
         dangle.alt = 'Dangle';
-        dangle.classList.add('dangle'); 
-        if (selectedFlowerType === 'flower1') {
+        dangle.classList.add('dangle');
         dangle.style.position = 'absolute';
-        dangle.style.top = '60%'; 
-        dangle.style.left = '45%';
-        dangle.style.transform = 'translateX(-50%)';
-    } else if (selectedFlowerType === 'flower2') {
-        dangle.style.position = 'absolute';
-        dangle.style.top = '55%'; 
+        dangle.style.top = '65%';
         dangle.style.left = '50%';
         dangle.style.transform = 'translateX(-50%)';
-    } else if (selectedFlowerType === 'flower3') {
-        dangle.style.position = 'absolute';
-        dangle.style.top = '65%'; 
-        dangle.style.left = '50%';
-        dangle.style.transform = 'translateX(-50%)';
+        dangle.style.width = '90px'; 
+        currentAccessory.parentElement.appendChild(dangle);
+    } else {
+        alert("Please select an accessory (earrings or pin) first.");
     }
-        document.getElementById('selected-flower').appendChild(dangle);
 
-        currentDangle = dangle;
-    }
+    currentDangle = selectedDangleSrc; 
+}
+
 
     function resetDisplayArea() {
       document.getElementById('selected-flower').innerHTML = '';
