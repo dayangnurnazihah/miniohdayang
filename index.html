@@ -7,95 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color:rgb(216, 56, 227);
-      display: flex;
-      justify-content: center;
-    }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+ <link rel="stylesheet" href="style.css">
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: rgb(249, 248, 199);
-      width: 600px;
-      box-shadow: 8px 30px 2px rgb(64, 31, 67);
-      border-radius: 5px;
-    }
-    .options {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .step-container {
-      width: 400px;
-      background-color: rgb(254, 255, 216);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      padding: 10px;
-    }
-    .step-container h1 {
-      font-family: "Pixelify Sans", sans-serif;
-      font-weight: 100;
-      margin: 0;
-    }
-    .options img {
-      width: 100px;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-    .options img:hover {
-      border: 2px solid #000;
-    }
-    .display-area {
-      width: 300px;
-      height: 300px;
-      position: relative;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .earring-display {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-    }
-    .earring {
-      position: relative;
-    }
-    .earring img {
-      width: 60px;
-    }
-    .earring-hook {
-      position: absolute;
-      top: -20px;
-      left: 45%;
-      transform: translateX(-50%);
-      width: 30px;
-    }
-    .controls button {
-      margin: 5px;
-      font-family: "Pixelify Sans", sans-serif;
-      font-weight: 100;
-      width: 100px;
-      height: 50px;
-      border-radius: 50px;
-    }
-    .dangle-options {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .dangle-options img {
-      width: 80px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
 
@@ -103,6 +17,19 @@
     <source src="bgsound.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
+<div class="page">
+  <div class="catalog">
+      <div class="options">
+        <img src="assets/blue1.png" alt="Flower 1" onclick="selectFlower('assets/blue1.png')">
+        <img src="assets/green1.png" alt="Flower 2" onclick="selectFlower('assets/green1.png')">
+        <img src="assets/purple1.png" alt="Flower 3" onclick="selectFlower('assets/purple1.png')">
+        <img src="assets/white1.png" alt="Flower 4" onclick="selectFlower('assets/white1.png')">
+        <img src="assets/blue2.png" alt="Flower 5" onclick="selectFlower('assets/blue2.png')">
+        <img src="assets/red1.png" alt="Flower 6" onclick="selectFlower('assets/red1.png')">
+
+     </div>
+  </div>
+
   <div class="container">
     <div class="step-container" id="step-1">
       <h1 id="step-1-text"></h1>
@@ -116,15 +43,12 @@
       <h1 id="step-3-text"></h1>
   </div>
 
-    <div class="options">
-      <img src="flower1.png" alt="Flower 1" onclick="selectFlower('flower1.png')">
-      <img src="flower2.png" alt="Flower 2" onclick="selectFlower('flower2.png')">
-      <img src="flower3.png" alt="Flower 3" onclick="selectFlower('flower3.png')">
-    </div>
+
 
     <div class="display-area" id="selected-flower">
       <!-- accessories display -->
     </div>
+    <button id="save-image">Save as Image</button>
 
     <div class="controls">
       <button onclick="addPin()" style="background-color: rgb(221, 169, 169);">PINS</button>
@@ -133,11 +57,14 @@
     </div>
 
     <div class="dangle-options">
-      <img src="dangle1.png" alt="Dangle 1" onclick="selectDangle('dangle1.png')">
-      <img src="dangle2.png" alt="Dangle 2" onclick="selectDangle('dangle2.png')">
+      <img src="assets/dangle1.png" alt="Dangle 1" onclick="selectDangle('assets/dangle1.png')">
+      <img src="assets/dangle2.png" alt="Dangle 2" onclick="selectDangle('assets/dangle2.png')">
+      <img src="assets/dangle3.png" alt="Dangle 2" onclick="selectDangle('assets/dangle3.png')">
+      <img src="assets/dangle4.png" alt="Dangle 2" onclick="selectDangle('assets/dangle4.png')">
     </div>
   </div>
 
+</div>
   <script>
     let selectedFlowerSrc = ""; 
     let currentAccessory = null; 
@@ -164,16 +91,8 @@
 
 typeText("step-1-text", "Step 1: Choose Flower");
 
-    function selectFlower(imageSrc) {
+  function selectFlower(imageSrc) {
       selectedFlowerSrc = imageSrc;
-
-      if (imageSrc === 'flower1.png') {
-        selectedFlowerType = 'flower1';
-    } else if (imageSrc === 'flower2.png') {
-        selectedFlowerType = 'flower2';
-    } else if (imageSrc === 'flower3.png') {
-        selectedFlowerType = 'flower3';
-    }
 
       const displayArea = document.getElementById('selected-flower');
     displayArea.innerHTML = ''; 
@@ -181,14 +100,7 @@ typeText("step-1-text", "Step 1: Choose Flower");
     const flower = document.createElement('img');
     flower.src = imageSrc;
     flower.alt = 'Selected Flower';
-
-    if (selectedFlowerType === 'flower1') {
-        flower.style.width = "250px";
-    } else if (selectedFlowerType === 'flower2') {
-        flower.style.width = "270px";
-    } else if (selectedFlowerType === 'flower3') {
-        flower.style.width = "220px";
-    }
+    flower.className = "flower";
 
     displayArea.appendChild(flower);
 
@@ -203,13 +115,14 @@ typeText("step-1-text", "Step 1: Choose Flower");
     }
 
     const pin = document.createElement('img');
-    pin.src = 'pin.png';
+    pin.src = 'assets/pin.png';
+    pin.className = "pin";
     pin.alt = 'Pin';
     pin.classList.add('added-element');
     
     pin.style.position = "absolute";
     pin.style.top = "55%"; 
-    pin.style.left = "-15%"; 
+    pin.style.left = "10%"; 
     
     document.getElementById('selected-flower').appendChild(pin);
 
@@ -233,14 +146,14 @@ function addEarring() {
     earring.classList.add('earring');
 
     const earringHook = document.createElement('img');
-    earringHook.src = 'earringhook.png';
+    earringHook.src = 'assets/earringhook.png';
     earringHook.alt = 'Earring Hook';
     earringHook.classList.add('earring-hook');
 
     const flower = document.createElement('img');
     flower.src = selectedFlowerSrc;
     flower.alt = 'Earring Flower';
-    flower.style.width = "150px";
+    flower.classList.add('earring-flower');
 
     earring.appendChild(earringHook);
     earring.appendChild(flower);
@@ -257,11 +170,12 @@ function addEarring() {
 
 
 
-    function addBagCharm() {
+
+function addBagCharm() {
       resetDisplayArea();
 
       const bagcharm = document.createElement('img');
-      bagcharm.src = 'bagcharm.png';
+      bagcharm.src = 'assets/bagcharm.png';
       bagcharm.alt = 'Bag Charm';
       bagcharm.style.width = "100px";
       document.getElementById('selected-flower').appendChild(bagcharm);
@@ -290,15 +204,15 @@ function addDangle() {
         const earrings = document.querySelectorAll('.earring');
         earrings.forEach(earring => {
             const dangle = document.createElement('img');
-            dangle.src = selectedDangleSrc;
+            dangle.src = selectedDangleSrc; 
             dangle.alt = 'Dangle';
             dangle.classList.add('dangle');
             dangle.style.position = 'absolute';
-            dangle.style.top = '60%';
-            dangle.style.left = '50%';
-            dangle.style.transform = 'translateX(-50%)';
+            dangle.style.top = '130px';
+            dangle.style.transform = 'translateX(70%)';
             dangle.style.width = '70px'; 
             earring.appendChild(dangle);
+            dangle.className = "dangle";
         });
     } else if (currentAccessory && currentAccessory.tagName === 'IMG' && currentAccessory.alt === 'Pin') {
         const dangle = document.createElement('img');
@@ -309,7 +223,8 @@ function addDangle() {
         dangle.style.top = '65%';
         dangle.style.left = '50%';
         dangle.style.transform = 'translateX(-50%)';
-        dangle.style.width = '90px'; 
+        dangle.style.width = '100px'; 
+        dangle.className = "dangle"
         currentAccessory.parentElement.appendChild(dangle);
     } else {
         alert("Please select an accessory (earrings or pin) first.");
@@ -324,6 +239,20 @@ function addDangle() {
     }
 
     document.querySelector("audio").volume = 1.0;
+
+    document.getElementById('save-image').addEventListener('click', () => {
+    const displayArea = document.getElementById('selected-flower');
+
+    html2canvas(displayArea).then((canvas) => {
+        const image = canvas.toDataURL('image/png');
+
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = 'complete-image.png';
+        link.click();
+    });
+});
+
   </script>
 </body>
 </html>

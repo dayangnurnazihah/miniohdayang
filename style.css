@@ -1,0 +1,134 @@
+    body {
+      background-color:rgb(216, 56, 227);
+      display: flex;
+      justify-content: center;
+    }
+
+    .page{
+      display: flex;
+      flex-direction: row;
+      gap:40px;
+    }
+
+    .catalog{
+      position: relative;
+      width: 750px;
+      height:1350px;
+      background-image: url(assets/menu.png);
+      background-size: 100%;
+      background-position: center; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    }
+
+    .options{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 5px; 
+      width: 80%;
+      justify-items: center;
+    }
+  
+    .options img{
+      cursor: pointer;
+      width: 100px;
+      z-index: 10;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgb(249, 248, 199);
+      width: 600px;
+      box-shadow: 8px 30px 2px rgb(64, 31, 67);
+      border-radius: 5px;
+    }
+    .step-container {
+      width: 400px;
+      background-color: rgb(254, 255, 216);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+    .step-container h1 {
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 100;
+      margin: 0;
+    }
+  
+    .options img:hover {
+      transform: scale(1.2);
+    }
+    .display-area {
+      width: 600px;
+      height: 600px;
+      position: relative;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .display-area img{
+      width: 250px;
+      position: absolute;
+    }
+
+    .display-area img.pin{
+      z-index: 1;
+    }
+
+    .display-area img.flower{
+      z-index: 10;
+    }
+
+    .earring-display {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      gap: 100px;
+      width: 100%;
+      
+    }
+
+    .earring {
+      position: relative;
+    text-align: center;
+    }
+
+    .earring img {
+      display: block;
+      margin: 0 auto;
+    }
+    .earring-hook {
+      position: absolute;
+      top: -50px;
+      transform: translateX(80%);
+      width: 70px !important;
+    }
+
+    .earring-flower{
+      width: 150px !important;
+    }
+    .controls button {
+      margin: 5px;
+      font-family: "Pixelify Sans", sans-serif;
+      font-weight: 100;
+      width: 100px;
+      height: 50px;
+      border-radius: 50px;
+    }
+    .dangle-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .dangle-options img {
+      width: 100px;
+      cursor: pointer;
+    }
