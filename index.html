@@ -127,6 +127,9 @@ typeText("step-1-text", "Step 1: Choose Flower");
     });
 
       document.getElementById("step-1").style.display = "none";
+      document.getElementById("step-4").style.display = "none";
+      document.getElementById("step-3").style.display = "none";
+
       document.getElementById("step-2").style.display = "block";
       typeText("step-2-text", "Step 2: Choose Accessory");
     }
@@ -156,6 +159,8 @@ typeText("step-1-text", "Step 1: Choose Flower");
 
     document.getElementById("step-2").style.display = "none";
     document.getElementById("step-1").style.display = "none";
+    document.getElementById("step-4").style.display = "none";
+
     document.getElementById("step-3").style.display = "block";
     typeText("step-3-text", "Step 3: Choose Dangle");
     }
@@ -193,6 +198,7 @@ function addEarring() {
 
   document.getElementById("step-2").style.display = "none";
   document.getElementById("step-3").style.display = "block";
+  document.getElementById("step-4").style.display = "none";
   typeText("step-3-text", "Step 3: Choose Dangle");
 
 }
