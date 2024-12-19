@@ -42,18 +42,19 @@
   <div class="step-container" id="step-3" style="display: none;">
       <h1 id="step-3-text"></h1>
   </div>
+  <div class="step-container" id="step-4" style="display: none;">
+    <h1 id="step-4-text"></h1>
+</div>
 
 
 
     <div class="display-area" id="selected-flower">
       <!-- accessories display -->
     </div>
-    <button id="save-image">Save as Image</button>
 
     <div class="controls">
-      <button onclick="addPin()" style="background-color: rgb(221, 169, 169);">PINS</button>
-      <button onclick="addEarring()" style="background-color: rgb(228, 241, 198);">EARRINGS</button>
-      <button onclick="addBagCharm()" style="background-color: rgb(198, 241, 241);">BAG CHARM</button>
+      <button onclick="addPin()" class="pin-btn">PINS</button>
+      <button onclick="addEarring()" class="earring-btn">EARRINGS</button>
     </div>
 
     <div class="dangle-options">
@@ -62,6 +63,8 @@
       <img src="assets/dangle3.png" alt="Dangle 2" onclick="selectDangle('assets/dangle3.png')">
       <img src="assets/dangle4.png" alt="Dangle 2" onclick="selectDangle('assets/dangle4.png')">
     </div>
+    <button id="save-image" class="save">Save as Image</button>
+
   </div>
 
 </div>
@@ -72,22 +75,37 @@
     let currentDangle = null;
     let selectedFlowerType = "";
 
-    function typeText(elementId, text, callback) {
-    let i = 0;
+    let typingTimeout; 
+let isTyping = false; 
+
+function typeText(elementId, text, callback, speed = 30) {
     const element = document.getElementById(elementId);
-    element.textContent = ""; 
+
+    if (typingTimeout) {
+        clearTimeout(typingTimeout);
+    }
+
+    isTyping = true;
+    element.textContent = "";
+
+    let i = 0;
 
     function type() {
         if (i < text.length) {
             element.textContent += text.charAt(i);
             i++;
-            setTimeout(type, 50); 
-        } else if (callback) {
-            callback(); 
+            typingTimeout = setTimeout(type, speed); 
+        } else {
+            isTyping = false; 
+            if (callback) {
+                callback(); 
+            }
         }
     }
+
     type();
 }
+
 
 typeText("step-1-text", "Step 1: Choose Flower");
 
@@ -100,9 +118,13 @@ typeText("step-1-text", "Step 1: Choose Flower");
     const flower = document.createElement('img');
     flower.src = imageSrc;
     flower.alt = 'Selected Flower';
-    flower.className = "flower";
+    flower.className = "flower flicker";
 
     displayArea.appendChild(flower);
+
+    flower.addEventListener('animationend', () => {
+        flower.classList.remove('flicker');
+    });
 
       document.getElementById("step-1").style.display = "none";
       document.getElementById("step-2").style.display = "block";
@@ -113,6 +135,10 @@ typeText("step-1-text", "Step 1: Choose Flower");
     if (currentAccessory) {
         currentAccessory.remove();
     }
+
+    if (selectedFlowerSrc == ""){
+      alert("Please select a flower first.");
+    } else {
 
     const pin = document.createElement('img');
     pin.src = 'assets/pin.png';
@@ -132,6 +158,8 @@ typeText("step-1-text", "Step 1: Choose Flower");
     document.getElementById("step-1").style.display = "none";
     document.getElementById("step-3").style.display = "block";
     typeText("step-3-text", "Step 3: Choose Dangle");
+    }
+
 }
 
 
@@ -166,6 +194,7 @@ function addEarring() {
   document.getElementById("step-2").style.display = "none";
   document.getElementById("step-3").style.display = "block";
   typeText("step-3-text", "Step 3: Choose Dangle");
+
 }
 
 
@@ -209,7 +238,6 @@ function addDangle() {
             dangle.classList.add('dangle');
             dangle.style.position = 'absolute';
             dangle.style.top = '130px';
-            dangle.style.transform = 'translateX(70%)';
             dangle.style.width = '70px'; 
             earring.appendChild(dangle);
             dangle.className = "dangle";
@@ -231,6 +259,10 @@ function addDangle() {
     }
 
     currentDangle = selectedDangleSrc; 
+    document.getElementById("step-3").style.display = "none";
+  document.getElementById("step-4").style.display = "block";
+  typeText("step-4-text", "Step 4: Save the image!");
+
 }
 
 
